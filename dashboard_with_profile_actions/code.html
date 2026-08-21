@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Morning Garden Diary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;family=Nunito+Sans:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#624000",
+                        "on-secondary-container": "#5f6840",
+                        "primary": "#815500",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#815500",
+                        "secondary-container": "#dee8b5",
+                        "on-secondary-fixed-variant": "#424a25",
+                        "tertiary-fixed": "#dde7b9",
+                        "primary-fixed": "#ffddb2",
+                        "on-surface": "#1e1c0d",
+                        "on-surface-variant": "#504537",
+                        "surface-container-highest": "#e9e3ca",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#171e03",
+                        "secondary-fixed-dim": "#c2cb9b",
+                        "on-tertiary-fixed-variant": "#424a28",
+                        "inverse-primary": "#f8bc61",
+                        "primary-container": "#fec166",
+                        "surface-container-low": "#fbf4db",
+                        "outline": "#827565",
+                        "tertiary": "#59623e",
+                        "on-primary-fixed": "#291800",
+                        "on-tertiary-container": "#515a36",
+                        "surface-variant": "#e9e3ca",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-background": "#1e1c0d",
+                        "on-primary-container": "#764e00",
+                        "surface-dim": "#e1dac2",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#d4c4b2",
+                        "primary-fixed-dim": "#f8bc61",
+                        "secondary-fixed": "#dee8b5",
+                        "tertiary-container": "#c7d1a4",
+                        "secondary": "#59623b",
+                        "surface-container": "#f5eed5",
+                        "surface-bright": "#fff9e9",
+                        "tertiary-fixed-dim": "#c1cb9f",
+                        "on-secondary-fixed": "#171e01",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#343120",
+                        "surface-container-high": "#efe8d0",
+                        "background": "#fff9e9",
+                        "inverse-on-surface": "#f8f1d8",
+                        "surface": "#fff9e9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "2rem",
+                        "unit": "8px",
+                        "gutter": "1.5rem",
+                        "card-gap": "2rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Quicksand"],
+                        "body-lg": ["Quicksand"],
+                        "body-md": ["Quicksand"],
+                        "headline-md": ["Quicksand"],
+                        "label-sm": ["Nunito Sans"],
+                        "headline-lg": ["Quicksand"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "label-sm": ["13px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-lg": ["36px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    },
+                    boxShadow: {
+                        'cloud': '0px 10px 30px rgba(113, 105, 85, 0.08)'
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .cloud-shadow { box-shadow: 0px 10px 30px rgba(113, 105, 85, 0.08); }
+        .hover-lift:hover { transform: translateY(-4px); box-shadow: 0px 14px 34px rgba(113, 105, 85, 0.12); }
+        .transition-soft { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* Custom Scrollbar for side panel */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d4c4b2; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #827565; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen overflow-x-hidden">
+<!-- Top Navigation -->
+<nav class="w-full top-0 bg-background dark:bg-background flat no shadows flex justify-between items-center px-container-padding py-4 max-w-[1400px] mx-auto z-30 relative">
+<div class="font-headline-lg text-headline-lg text-primary dark:text-primary-fixed-dim">Morning Garden Diary</div>
+<div class="flex gap-6 items-center">
+<button class="text-primary font-bold border-b-2 border-primary pb-1 text-headline-md font-headline-md">Dashboard</button>
+<button class="text-on-surface-variant dark:text-on-surface-variant font-medium text-headline-md font-headline-md hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200">Journal</button>
+</div>
+<div class="flex gap-4 relative">
+<span class="material-symbols-outlined text-primary hover:text-primary-container cursor-pointer transition-colors duration-200" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-primary hover:text-primary-container cursor-pointer transition-colors duration-200" data-icon="notifications">notifications</span>
+<div class="relative">
+<img alt="User profile avatar" class="w-10 h-10 rounded-full object-cover border-2 border-primary-container cursor-pointer" data-alt="A softly lit, warm portrait photo of a user in a garden setting, minimalist style with soft earthy tones, 50-100 words prompt." onclick="toggleProfileMenu()" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1qkoj_p1gFpKGNVytdbmMFcEux8XkoD1QYo8xRE-ko8WM1IWxf5pc4Atsr8m6mSIWKYoPsPIj-mzXnPja3bGV63J4VvEv2qLAWSKhot-dtiP0VimljNPcXmPSrVaO2V1mk3eKqOWNa1UEIkqwGJuI60GEg8Mx_4hTIXQIs1-4PO6LzsNEyUR22oQrlFO-_kc9qCFslV-1y1XnpPYmz1YD2zumCRcJTzm4_-iOS7nR5QatDvQ7Th6h"/>
+<!-- Profile Dropdown -->
+<div class="absolute right-0 mt-2 w-48 bg-surface-container-lowest rounded-xl cloud-shadow py-2 hidden z-50 transform origin-top-right transition-all duration-200" id="profile-menu">
+<button class="w-full text-left px-4 py-2 font-body-md text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors flex items-center gap-2" onclick="openMyInfoModal()">
+<span class="material-symbols-outlined text-[20px]">person</span>내 정보
+    </button>
+<button class="w-full text-left px-4 py-2 font-body-md text-error hover:bg-error-container hover:text-error transition-colors flex items-center gap-2" onclick="openLogoutModal()">
+<span class="material-symbols-outlined text-[20px]">logout</span>로그아웃
+    </button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Modals -->
+<!-- My Info Modal -->
+<div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm hidden z-50 flex items-center justify-center transition-opacity" id="my-info-modal" onclick="closeMyInfoModal()">
+<div class="bg-surface-container-lowest rounded-xl p-8 max-w-sm w-full mx-4 cloud-shadow transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">내 정보</h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors" onclick="closeMyInfoModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex flex-col items-center text-center">
+<img alt="User profile avatar" class="w-24 h-24 rounded-full object-cover border-4 border-surface-container-low mb-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1qkoj_p1gFpKGNVytdbmMFcEux8XkoD1QYo8xRE-ko8WM1IWxf5pc4Atsr8m6mSIWKYoPsPIj-mzXnPja3bGV63J4VvEv2qLAWSKhot-dtiP0VimljNPcXmPSrVaO2V1mk3eKqOWNa1UEIkqwGJuI60GEg8Mx_4hTIXQIs1-4PO6LzsNEyUR22oQrlFO-_kc9qCFslV-1y1XnpPYmz1YD2zumCRcJTzm4_-iOS7nR5QatDvQ7Th6h"/>
+<h4 class="font-headline-md text-body-lg text-on-surface mb-1">Evelyn Wood</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">evelyn@garden.com</p>
+</div>
+</div>
+</div>
+<!-- Logout Confirmation Modal -->
+<div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm hidden z-50 flex items-center justify-center transition-opacity" id="logout-modal" onclick="closeLogoutModal()">
+<div class="bg-surface-container-lowest rounded-xl p-8 max-w-sm w-full mx-4 cloud-shadow transform scale-95 transition-transform duration-200" onclick="event.stopPropagation()">
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-surface-container-low flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined text-[32px]">logout</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-2">로그아웃</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">정말 로그아웃 하시겠습니까?</p>
+<div class="flex gap-4 w-full">
+<button class="flex-1 py-3 px-6 rounded-full font-body-md text-body-md bg-surface-container-low text-on-surface hover:bg-surface-container-highest transition-colors" onclick="closeLogoutModal()">
+                    아니오
+                </button>
+<button class="flex-1 py-3 px-6 rounded-full font-body-md text-body-md bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-colors" onclick="window.location.href='index.html'">
+                    예
+                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Layout -->
+<main class="max-w-[1400px] mx-auto px-container-padding pb-20 relative">
+<!-- Decorative Elements -->
+<svg class="absolute top-10 left-10 w-12 h-12 text-secondary opacity-30" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+<path d="M11 7h2v6h-2zm0 8h2v2h-2z"></path>
+</svg>
+<svg class="absolute bottom-40 right-20 w-8 h-8 text-primary-container opacity-50" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+</svg>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter mt-8">
+<!-- Left Column (Profile & Clock) -->
+<div class="md:col-span-3 flex flex-col gap-card-gap">
+<!-- Profile Card -->
+<div class="bg-surface-container-lowest rounded-xl cloud-shadow p-8 flex flex-col items-center text-center hover-lift transition-soft">
+<img class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-surface-container-low shadow-sm" data-alt="A highly detailed, soft focus portrait of a person in a serene garden. The lighting is bright and warm, creating a cozy morning atmosphere. The style is soft minimalist photography, reflecting a calm, organized lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApcKLLeQ8ZS41yyP6iOZHh5dntdQO_2zrHGgZ6u24HsYlnYGS9Ry_9xPwlvHqEjLQxjPtvr6klgRXz2sUu1A4hX8gt6BesBCkj4muvVP_hmSv_Ja03Nmxu2Dcr-ssvKy2eskQmWgzZi_7EoXV9VXu_uZvOyie3RXifGuHnra_DdcAMLirbuWbWWcOMTUJnOZWfnIkzcy4pQyFOfdvE64TkcjBddWAAkfiQNoNXc6F-vcKDx9YmHJHG"/>
+<h2 class="font-headline-md text-headline-md text-primary mb-2">My Name</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">나를 한 줄로 소개해보세요</p>
+<div class="flex gap-2 flex-wrap justify-center mt-2">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm">#MorningPerson</span>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm">#GardenLover</span>
+</div>
+</div>
+<!-- Clock Card -->
+<div class="bg-primary-container text-on-primary-container rounded-xl cloud-shadow p-8 flex flex-col items-center justify-center min-h-[200px] relative overflow-hidden hover-lift transition-soft">
+<svg class="absolute -right-4 -bottom-4 w-24 h-24 text-inverse-primary opacity-50" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+</svg>
+<div class="font-headline-lg text-headline-lg tracking-tight mb-2 z-10" id="digital-clock">08:45 AM</div>
+<div class="font-body-lg text-body-lg opacity-90 z-10">Friday, August 21</div>
+</div>
+</div>
+<!-- Center Column (Calendar) -->
+<div class="md:col-span-6">
+<div class="bg-surface-container-lowest rounded-xl cloud-shadow p-8 hover-lift transition-soft">
+<div class="flex justify-between items-center mb-8">
+<h2 class="font-headline-md text-headline-md text-primary">August 2024</h2>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-2 mb-4 text-center font-label-sm text-label-sm text-on-surface-variant">
+<div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+</div>
+<div class="grid grid-cols-7 gap-2">
+<!-- Empty cells for start of month -->
+<div class="aspect-square"></div>
+<div class="aspect-square"></div>
+<div class="aspect-square"></div>
+<!-- Days -->
+<script>
+                            for(let i=1; i<=31; i++) {
+                                let isToday = i === 21;
+                                let classes = "aspect-square rounded-lg flex items-center justify-center cursor-pointer transition-all duration-200 font-body-md text-body-md ";
+                                if(isToday) {
+                                    classes += "bg-primary-container text-on-primary-container shadow-md font-bold hover:scale-105";
+                                } else {
+                                    classes += "bg-surface-container-low text-on-surface hover:bg-surface-container-highest hover:scale-105";
+                                }
+                                document.write(`<div class="${classes}" onclick="openEntryPanel(${i})">${i}</div>`);
+                            }
+                        </script>
+</div>
+</div>
+</div>
+<!-- Right Column (Media & Todo) -->
+<div class="md:col-span-3 flex flex-col gap-card-gap">
+<!-- YouTube Card -->
+<div class="bg-surface-container-lowest rounded-xl cloud-shadow p-6 hover-lift transition-soft">
+<div class="flex items-center gap-2 mb-4 text-primary">
+<span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
+<h3 class="font-body-lg text-body-lg">Morning Vibes</h3>
+</div>
+<div class="w-full aspect-video bg-surface-container-low rounded-lg flex items-center justify-center mb-4 relative overflow-hidden group cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A soft, cozy thumbnail image for a lo-fi morning garden music video. Features soft sunlight filtering through green leaves, warm cream tones, minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwH3eShYmyKLpKdebBEp56cVgUaxjzRemROe6a_cSX6vKscBpoJAx-WFpfHMdv9ck-4yRHP96E7-VZfxHsM2V_KRdpjZX8O6oy2uy1wwCXLczdbfT-2_ihy5HU1lPWM4UZlJI8oPl4ymVa4slPJ27X_otPqECHGrMct8k1V15JYNM-0sUXyLgm2oHhmOSrrSjXn8PLERmLfpomgNi42L0F2CLrUpD9TPewCUqlvyxn07sJQ8PJGFiE"/>
+<div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white text-4xl" data-icon="play_arrow">play_arrow</span>
+</div>
+</div>
+<input class="w-full bg-surface-container-low border-none rounded-full px-4 py-2 font-body-md text-body-md focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-on-surface-variant/50" placeholder="YouTube URL을 입력해보세요" type="text"/>
+</div>
+<!-- Todo List Card -->
+<div class="bg-surface-container-lowest rounded-xl cloud-shadow p-6 flex-grow hover-lift transition-soft">
+<h3 class="font-headline-md text-headline-md text-primary mb-6">오늘 할 일을 추가해볼까요? 🌱</h3>
+<div class="space-y-4 mb-6">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary focus:ring-offset-background bg-surface-container-low" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Spring Boot 공부하기</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary focus:ring-offset-background bg-surface-container-low" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">자기소개서 수정하기</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary focus:ring-offset-background bg-surface-container-low" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant line-through">정원 산책하기</span>
+</label>
+</div>
+<div class="flex gap-2">
+<input class="flex-grow bg-surface-container-low border-none rounded-full px-4 py-2 font-body-md text-body-md focus:ring-2 focus:ring-primary focus:outline-none" placeholder="새로운 할 일..." type="text"/>
+<button class="bg-primary text-on-primary w-10 h-10 rounded-full flex items-center justify-center hover:bg-primary-container hover:text-on-primary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Side Panel (Entry Editor) - Hidden by default -->
+<div class="fixed inset-y-0 right-0 w-full md:w-[500px] bg-surface-container-lowest shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 rounded-l-xl flex flex-col h-screen" id="entry-panel">
+<div class="p-6 border-b border-dashed border-outline-variant flex justify-between items-center bg-surface-container-lowest sticky top-0 rounded-tl-xl">
+<h2 class="font-headline-md text-headline-md text-primary" id="panel-date">August 21, 2024</h2>
+<button class="text-on-surface-variant hover:text-primary transition-colors" onclick="closeEntryPanel()">
+<span class="material-symbols-outlined text-3xl" data-icon="close">close</span>
+</button>
+</div>
+<div class="p-6 overflow-y-auto flex-grow bg-surface">
+<!-- Weather Selection -->
+<div class="flex gap-4 justify-center mb-8 bg-surface-container-low p-4 rounded-xl">
+<button class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="sunny">sunny</span>
+</button>
+<button class="w-12 h-12 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="cloud">cloud</span>
+</button>
+<button class="w-12 h-12 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="rainy">rainy</span>
+</button>
+</div>
+<!-- Title -->
+<input class="w-full bg-transparent border-none font-headline-lg text-headline-lg text-on-surface placeholder:text-on-surface-variant/40 focus:ring-0 mb-6 p-0" placeholder="오늘의 제목을 입력해보세요" type="text"/>
+<!-- Content Editor -->
+<textarea class="w-full h-64 bg-transparent border-none font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:ring-0 resize-none p-0 mb-6" placeholder="오늘 하루는 어땠나요? 편안하게 기록해보세요..."></textarea>
+<!-- Photo Upload -->
+<div class="mb-6">
+<div class="flex justify-between items-center mb-3">
+<span class="font-body-md text-body-md font-bold text-on-surface-variant">Photos</span>
+<span class="font-label-sm text-label-sm text-outline">0/5</span>
+</div>
+<div class="flex gap-3 overflow-x-auto pb-2">
+<button class="min-w-[100px] h-[100px] rounded-xl bg-surface-container-low border-2 border-dashed border-outline-variant flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined mb-1" data-icon="add_photo_alternate">add_photo_alternate</span>
+<span class="font-label-sm text-label-sm">Add</span>
+</button>
+</div>
+</div>
+<!-- Hashtags -->
+<div class="mb-8">
+<div class="flex justify-between items-center mb-3">
+<span class="font-body-md text-body-md font-bold text-on-surface-variant">Hashtags</span>
+<span class="font-label-sm text-label-sm text-outline">3/20</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1.5 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+                        #Morning
+                        <span class="material-symbols-outlined text-[14px] cursor-pointer" data-icon="close">close</span>
+</span>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1.5 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+                        #Study
+                        <span class="material-symbols-outlined text-[14px] cursor-pointer" data-icon="close">close</span>
+</span>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1.5 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+                        #Relax
+                        <span class="material-symbols-outlined text-[14px] cursor-pointer" data-icon="close">close</span>
+</span>
+<input class="bg-surface-container-low border-none rounded-full px-4 py-1.5 font-label-sm text-label-sm focus:ring-2 focus:ring-primary w-24" placeholder="+ Add tag" type="text"/>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-dashed border-outline-variant bg-surface-container-lowest sticky bottom-0 rounded-bl-xl">
+<button class="w-full bg-primary text-on-primary font-body-lg text-body-lg py-4 rounded-full hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-md">
+                Save Entry
+            </button>
+</div>
+</div>
+<!-- Overlay -->
+<div class="fixed inset-0 bg-inverse-surface/20 backdrop-blur-sm hidden z-40" id="panel-overlay" onclick="closeEntryPanel()"></div>
+<!-- Footer -->
+<footer class="w-full py-8 border-t border-dashed border-outline-variant bg-transparent max-w-[1400px] mx-auto px-container-padding flex justify-between items-center mt-12">
+<div class="font-headline-md text-headline-md text-primary">Morning Garden Diary</div>
+<div class="font-body-md text-body-md text-on-surface-variant">© 2024 Garden Diary. Hand-drawn with care.</div>
+<div class="flex gap-4">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+</div>
+</footer>
+<script>
+        // Clock Update
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            document.getElementById('digital-clock').textContent = `${hours}:${minutes} ${ampm}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Panel Logic
+        function openEntryPanel(day) {
+            document.getElementById('panel-date').textContent = `August ${day}, 2024`;
+            document.getElementById('entry-panel').classList.remove('translate-x-full');
+            document.getElementById('panel-overlay').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeEntryPanel() {
+            document.getElementById('entry-panel').classList.add('translate-x-full');
+            document.getElementById('panel-overlay').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Profile Menu Logic
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('profile-menu');
+            const avatar = document.querySelector('img[alt="User profile avatar"]');
+            if (!avatar.contains(event.target) && !menu.contains(event.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Modal Logic
+        function openMyInfoModal() {
+            document.getElementById('profile-menu').classList.add('hidden');
+            const modal = document.getElementById('my-info-modal');
+            modal.classList.remove('hidden');
+            // Small delay to allow display:block to apply before transition
+            setTimeout(() => {
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeMyInfoModal() {
+            const modal = document.getElementById('my-info-modal');
+            modal.firstElementChild.classList.remove('scale-100');
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        function openLogoutModal() {
+            document.getElementById('profile-menu').classList.add('hidden');
+            const modal = document.getElementById('logout-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeLogoutModal() {
+            const modal = document.getElementById('logout-modal');
+            modal.firstElementChild.classList.remove('scale-100');
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+    </script>
+</body></html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Morning Garden Diary - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;family=Nunito+Sans:wght@700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#624000",
+                        "on-secondary-container": "#5f6840",
+                        "primary": "#815500",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#815500",
+                        "secondary-container": "#dee8b5",
+                        "on-secondary-fixed-variant": "#424a25",
+                        "tertiary-fixed": "#dde7b9",
+                        "primary-fixed": "#ffddb2",
+                        "on-surface": "#1e1c0d",
+                        "on-surface-variant": "#504537",
+                        "surface-container-highest": "#e9e3ca",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#171e03",
+                        "secondary-fixed-dim": "#c2cb9b",
+                        "on-tertiary-fixed-variant": "#424a28",
+                        "inverse-primary": "#f8bc61",
+                        "primary-container": "#fec166",
+                        "surface-container-low": "#fbf4db",
+                        "outline": "#827565",
+                        "tertiary": "#59623e",
+                        "on-primary-fixed": "#291800",
+                        "on-tertiary-container": "#515a36",
+                        "surface-variant": "#e9e3ca",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-background": "#1e1c0d",
+                        "on-primary-container": "#764e00",
+                        "surface-dim": "#e1dac2",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#d4c4b2",
+                        "primary-fixed-dim": "#f8bc61",
+                        "secondary-fixed": "#dee8b5",
+                        "tertiary-container": "#c7d1a4",
+                        "secondary": "#59623b",
+                        "surface-container": "#f5eed5",
+                        "surface-bright": "#fff9e9",
+                        "tertiary-fixed-dim": "#c1cb9f",
+                        "on-secondary-fixed": "#171e01",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#343120",
+                        "surface-container-high": "#efe8d0",
+                        "background": "#fff9e9",
+                        "inverse-on-surface": "#f8f1d8",
+                        "surface": "#fff9e9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "2rem",
+                        "unit": "8px",
+                        "gutter": "1.5rem",
+                        "card-gap": "2rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Quicksand", "sans-serif"],
+                        "body-lg": ["Quicksand", "sans-serif"],
+                        "body-md": ["Quicksand", "sans-serif"],
+                        "headline-md": ["Quicksand", "sans-serif"],
+                        "label-sm": ["Nunito Sans", "sans-serif"],
+                        "headline-lg": ["Quicksand", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "label-sm": ["13px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-lg": ["36px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    },
+                    boxShadow: {
+                        'cloud': '0px 10px 30px rgba(113, 105, 85, 0.08)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-surface');
+            overflow-x: hidden;
+        }
+        .cloud-shadow { box-shadow: 0px 10px 30px rgba(113, 105, 85, 0.08); }
+        .hover-lift { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hover-lift:hover { transform: translateY(-4px); box-shadow: 0px 16px 36px rgba(113, 105, 85, 0.12); }
+        .transition-soft { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d4c4b2; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #827565; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen">
+
+    <!-- Top Navigation -->
+    <nav class="w-full top-0 bg-background/95 backdrop-blur-sm sticky justify-between items-center px-container-padding py-4 max-w-[1400px] mx-auto z-30 flex border-b border-surface-container-highest/60">
+        <!-- Logo -->
+        <div class="font-headline-lg text-headline-lg text-primary flex items-center gap-2 cursor-pointer select-none" id="nav-brand-logo">
+            <span class="material-symbols-outlined text-primary text-[32px]">local_florist</span>
+            <span>Morning Garden Diary</span>
+        </div>
+        
+        <!-- Center Tabs (Dashboard / Journal) -->
+        <div class="flex gap-4 items-center bg-surface-container-low p-1.5 rounded-full cloud-shadow">
+            <button id="tab-dashboard-btn" class="px-5 py-2 rounded-full font-headline-md text-[17px] transition-all duration-200 bg-primary-container text-on-primary-container font-bold shadow-sm flex items-center gap-1.5 cursor-pointer">
+                <span class="material-symbols-outlined text-[20px]">calendar_month</span>
+                <span>Dashboard</span>
+            </button>
+            <button id="tab-journal-btn" class="px-5 py-2 rounded-full font-headline-md text-[17px] transition-all duration-200 text-on-surface-variant hover:text-primary font-medium flex items-center gap-1.5 cursor-pointer">
+                <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+                <span>Journal</span>
+            </button>
+        </div>
+
+        <!-- Right User Actions -->
+        <div class="flex gap-4 items-center relative">
+            <button class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-surface-container-low transition-colors cursor-pointer" title="알림">
+                <span class="material-symbols-outlined text-[22px]">notifications</span>
+            </button>
+            
+            <div class="relative">
+                <img id="profile-avatar" alt="User profile avatar" class="w-10 h-10 rounded-full object-cover border-2 border-primary-container cursor-pointer select-none hover:scale-105 transition-transform" onclick="toggleProfileMenu()" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1qkoj_p1gFpKGNVytdbmMFcEux8XkoD1QYo8xRE-ko8WM1IWxf5pc4Atsr8m6mSIWKYoPsPIj-mzXnPja3bGV63J4VvEv2qLAWSKhot-dtiP0VimljNPcXmPSrVaO2V1mk3eKqOWNa1UEIkqwGJuI60GEg8Mx_4hTIXQIs1-4PO6LzsNEyUR22oQrlFO-_kc9qCFslV-1y1XnpPYmz1YD2zumCRcJTzm4_-iOS7nR5QatDvQ7Th6h"/>
+                
+                <!-- Profile Dropdown Menu -->
+                <div class="absolute right-0 mt-2 w-52 bg-surface-container-lowest rounded-2xl cloud-shadow py-2 hidden z-50 transform origin-top-right transition-all duration-200 border border-outline-variant/30 shadow-xl" id="profile-menu">
+                    <button class="w-full text-left px-4 py-2.5 font-body-md text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors flex items-center gap-2.5 cursor-pointer" onclick="openMyInfoModal()">
+                        <span class="material-symbols-outlined text-[20px] text-primary">person</span>
+                        <span>내 정보</span>
+                    </button>
+                    <button class="w-full text-left px-4 py-2.5 font-body-md text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors flex items-center gap-2.5 cursor-pointer" onclick="openProfileEditModal()">
+                        <span class="material-symbols-outlined text-[20px] text-secondary">edit</span>
+                        <span>프로필 수정</span>
+                    </button>
+                    <div class="my-1 border-t border-surface-container-highest border-dashed"></div>
+                    <button class="w-full text-left px-4 py-2.5 font-body-md text-error hover:bg-error-container hover:text-on-error-container transition-colors flex items-center gap-2.5 cursor-pointer" onclick="openLogoutModal()">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <span>로그아웃</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modals -->
+    <!-- 1. My Info Modal -->
+    <div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm hidden z-50 flex items-center justify-center transition-opacity" id="my-info-modal" onclick="closeMyInfoModal()">
+        <div class="bg-surface-container-lowest rounded-2xl p-8 max-w-sm w-full mx-4 cloud-shadow transform scale-95 transition-transform duration-200 border border-outline-variant/30 shadow-2xl" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-headline-md text-headline-md text-primary">내 정보</h3>
+                <button class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-low" onclick="closeMyInfoModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="flex flex-col items-center text-center">
+                <img id="modal-user-avatar" alt="User profile avatar" class="w-24 h-24 rounded-full object-cover border-4 border-surface-container-low mb-4 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1qkoj_p1gFpKGNVytdbmMFcEux8XkoD1QYo8xRE-ko8WM1IWxf5pc4Atsr8m6mSIWKYoPsPIj-mzXnPja3bGV63J4VvEv2qLAWSKhot-dtiP0VimljNPcXmPSrVaO2V1mk3eKqOWNa1UEIkqwGJuI60GEg8Mx_4hTIXQIs1-4PO6LzsNEyUR22oQrlFO-_kc9qCFslV-1y1XnpPYmz1YD2zumCRcJTzm4_-iOS7nR5QatDvQ7Th6h"/>
+                <h4 id="modal-user-name" class="font-headline-md text-headline-md text-on-surface mb-1">Evelyn Wood</h4>
+                <p id="modal-user-email" class="font-body-md text-body-md text-on-surface-variant mb-3">evelyn@garden.com</p>
+                <div class="mt-4 pt-4 border-t border-surface-container-highest border-dashed w-full flex flex-col gap-2">
+                    <span class="inline-flex items-center justify-center gap-1.5 text-secondary font-label-sm text-label-sm bg-secondary-container/50 py-1.5 px-3 rounded-full">
+                        <span class="material-symbols-outlined text-[16px]">eco</span>
+                        Morning Garden Member
+                    </span>
+                    <button onclick="closeMyInfoModal(); openProfileEditModal();" class="mt-2 text-primary font-body-md text-sm hover:underline flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">edit</span> 프로필 편집하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Profile Edit Modal -->
+    <div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm hidden z-50 flex items-center justify-center transition-opacity" id="profile-edit-modal" onclick="closeProfileEditModal()">
+        <div class="bg-surface-container-lowest rounded-2xl p-8 max-w-md w-full mx-4 cloud-shadow transform scale-95 transition-transform duration-200 border border-outline-variant/30 shadow-2xl" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined">edit</span>
+                    <span>프로필 수정</span>
+                </h3>
+                <button class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-low" onclick="closeProfileEditModal()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <form id="profile-edit-form" class="space-y-4">
+                <div>
+                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5" for="edit-name-input">이름 (Name)</label>
+                    <input id="edit-name-input" type="text" class="w-full bg-surface-container rounded-xl py-3 px-4 border-none focus:ring-2 focus:ring-primary-container text-on-surface font-body-md" required/>
+                </div>
+
+                <div>
+                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5" for="edit-bio-input">한 줄 소개 (Bio)</label>
+                    <input id="edit-bio-input" type="text" placeholder="나를 한 줄로 소개해보세요 🌱" class="w-full bg-surface-container rounded-xl py-3 px-4 border-none focus:ring-2 focus:ring-primary-container text-on-surface font-body-md"/>
+                </div>
+
+                <div>
+                    <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5" for="edit-tags-input">관심 태그 (쉼표로 구분)</label>
+                    <input id="edit-tags-input" type="text" placeholder="#MorningPerson, #GardenLover, #Coffee" class="w-full bg-surface-container rounded-xl py-3 px-4 border-none focus:ring-2 focus:ring-primary-container text-on-surface font-body-md"/>
+                    <p class="text-xs text-on-surface-variant/70 mt-1 pl-1">예: #MorningPerson, #GardenLover, #CozyLife</p>
+                </div>
+
+                <div class="flex gap-3 pt-4 border-t border-surface-container-highest border-dashed">
+                    <button type="button" onclick="closeProfileEditModal()" class="flex-1 py-3 px-5 rounded-full font-body-md bg-surface-container-low text-on-surface hover:bg-surface-container-highest transition-colors cursor-pointer">
+                        취소
+                    </button>
+                    <button type="submit" class="flex-1 py-3 px-5 rounded-full font-body-md font-bold bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-md cursor-pointer">
+                        저장하기
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. Logout Confirmation Modal -->
+    <div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm hidden z-50 flex items-center justify-center transition-opacity" id="logout-modal" onclick="closeLogoutModal()">
+        <div class="bg-surface-container-lowest rounded-2xl p-8 max-w-sm w-full mx-4 cloud-shadow transform scale-95 transition-transform duration-200 border border-outline-variant/30 shadow-2xl" onclick="event.stopPropagation()">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-surface-container-low flex items-center justify-center text-primary mb-4">
+                    <span class="material-symbols-outlined text-[32px]">logout</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-primary mb-2">로그아웃</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant mb-8">정말 로그아웃 하시겠습니까?</p>
+                <div class="flex gap-4 w-full">
+                    <button class="flex-1 py-3 px-6 rounded-full font-body-md text-body-md bg-surface-container-low text-on-surface hover:bg-surface-container-highest transition-colors cursor-pointer" onclick="closeLogoutModal()">
+                        아니오
+                    </button>
+                    <button id="confirm-logout-btn" class="flex-1 py-3 px-6 rounded-full font-body-md text-body-md bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-sm font-bold cursor-pointer">
+                        예
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-[1400px] mx-auto px-container-padding pb-20 relative">
+        <!-- Decorative Background Icons -->
+        <svg class="absolute top-10 left-10 w-12 h-12 text-secondary opacity-25 pointer-events-none" fill="currentColor" viewbox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+            <path d="M11 7h2v6h-2zm0 8h2v2h-2z"></path>
+        </svg>
+        <svg class="absolute bottom-40 right-20 w-8 h-8 text-primary-container opacity-40 pointer-events-none" fill="currentColor" viewbox="0 0 24 24">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+        </svg>
+
+        <!-- ============================================== -->
+        <!-- VIEW 1: DASHBOARD VIEW (Default)               -->
+        <!-- ============================================== -->
+        <div id="dashboard-view" class="grid grid-cols-1 md:grid-cols-12 gap-gutter mt-8">
+            
+            <!-- Left Column (Profile & Realtime Clock) -->
+            <div class="md:col-span-3 flex flex-col gap-card-gap">
+                <!-- Profile Card -->
+                <div class="bg-surface-container-lowest rounded-2xl cloud-shadow p-8 flex flex-col items-center text-center hover-lift transition-soft border border-outline-variant/20 relative group">
+                    <button id="card-edit-profile-btn" onclick="openProfileEditModal()" class="absolute top-4 right-4 text-outline hover:text-primary transition-colors p-1.5 rounded-full hover:bg-surface-container-low cursor-pointer" title="프로필 수정">
+                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                    </button>
+                    <img id="dashboard-avatar" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-surface-container-low shadow-sm" alt="User profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApcKLLeQ8ZS41yyP6iOZHh5dntdQO_2zrHGgZ6u24HsYlnYGS9Ry_9xPwlvHqEjLQxjPtvr6klgRXz2sUu1A4hX8gt6BesBCkj4muvVP_hmSv_Ja03Nmxu2Dcr-ssvKy2eskQmWgzZi_7EoXV9VXu_uZvOyie3RXifGuHnra_DdcAMLirbuWbWWcOMTUJnOZWfnIkzcy4pQyFOfdvE64TkcjBddWAAkfiQNoNXc6F-vcKDx9YmHJHG"/>
+                    <h2 id="user-profile-name" class="font-headline-md text-headline-md text-primary mb-1">My Name</h2>
+                    <p id="user-profile-bio" class="font-body-md text-body-md text-on-surface-variant mb-4 px-2">나를 한 줄로 소개해보세요 🌱</p>
+                    <div id="user-profile-tags" class="flex gap-2 flex-wrap justify-center mt-1">
+                        <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm">#MorningPerson</span>
+                        <span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm">#GardenLover</span>
+                    </div>
+                </div>
+
+                <!-- Clock Card -->
+                <div class="bg-primary-container text-on-primary-container rounded-2xl cloud-shadow p-8 flex flex-col items-center justify-center min-h-[200px] relative overflow-hidden hover-lift transition-soft border border-primary/20">
+                    <svg class="absolute -right-4 -bottom-4 w-24 h-24 text-inverse-primary opacity-50 pointer-events-none" fill="currentColor" viewbox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+                    </svg>
+                    <div class="font-headline-lg text-headline-lg tracking-tight mb-1 z-10 font-bold" id="digital-clock">08:45 AM</div>
+                    <div class="font-body-lg text-body-lg opacity-90 z-10 font-medium" id="date-display">Friday, August 21</div>
+                </div>
+            </div>
+
+            <!-- Center Column (Interactive Calendar) -->
+            <div class="md:col-span-6">
+                <div class="bg-surface-container-lowest rounded-2xl cloud-shadow p-8 hover-lift transition-soft border border-outline-variant/20">
+                    <!-- Calendar Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center gap-3">
+                            <h2 id="calendar-title" class="font-headline-md text-headline-md text-primary">August 2024</h2>
+                            <button id="today-jump-btn" class="px-3 py-1 rounded-full bg-surface-container-low text-xs font-bold text-primary hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer" title="오늘 날짜로 이동">
+                                Today
+                            </button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="prev-month-btn" class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-surface-container-highest transition-colors cursor-pointer shadow-sm" title="이전 달">
+                                <span class="material-symbols-outlined text-on-surface-variant">chevron_left</span>
+                            </button>
+                            <button id="next-month-btn" class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-surface-container-highest transition-colors cursor-pointer shadow-sm" title="다음 달">
+                                <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Days of Week -->
+                    <div class="grid grid-cols-7 gap-2 mb-3 text-center font-label-sm text-label-sm text-on-surface-variant font-bold">
+                        <div class="text-error">Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div class="text-primary">Sat</div>
+                    </div>
+
+                    <!-- Calendar Days Grid (Dynamically Rendered) -->
+                    <div id="calendar-days-grid" class="grid grid-cols-7 gap-2 min-h-[300px]">
+                        <!-- Populated by dashboard.js -->
+                    </div>
+
+                    <!-- Calendar Legend & Quick Tips -->
+                    <div class="flex items-center justify-between mt-6 pt-4 border-t border-surface-container-highest border-dashed text-xs text-on-surface-variant">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-1.5" title="해당 날짜에 일기가 작성되어 있습니다">
+                                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                <span>일기 작성됨</span>
+                            </div>
+                            <div class="flex items-center gap-1.5" title="해당 날짜에 할 일이 등록되어 있습니다">
+                                <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                                <span>할 일 있음</span>
+                            </div>
+                        </div>
+                        <span class="text-[11px] text-outline">💡 날짜를 누르면 일기 쓰기가 열려요</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column (YouTube Music & Date-specific Todo) -->
+            <div class="md:col-span-3 flex flex-col gap-card-gap">
+                <!-- YouTube Card -->
+                <div class="bg-surface-container-lowest rounded-2xl cloud-shadow p-6 hover-lift transition-soft border border-outline-variant/20">
+                    <div class="flex items-center justify-between mb-3 text-primary">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[22px]">play_circle</span>
+                            <h3 class="font-body-lg text-body-lg font-bold">Morning Vibes</h3>
+                        </div>
+                        <a id="youtube-external-link" href="#" target="_blank" rel="noopener noreferrer" class="text-outline hover:text-primary transition-colors hidden text-xs flex items-center gap-1" title="YouTube에서 열기">
+                            <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Dynamic YouTube Container -->
+                    <div id="youtube-container" class="w-full aspect-video bg-surface-container-low rounded-xl flex items-center justify-center mb-3 relative overflow-hidden group shadow-inner">
+                        <!-- Populated by dashboard.js -->
+                    </div>
+
+                    <div class="relative">
+                        <input id="youtube-input" class="w-full bg-surface-container-low border-none rounded-full pl-4 pr-9 py-2.5 font-body-md text-sm focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-on-surface-variant/50 text-on-surface transition-all" placeholder="YouTube URL 입력 후 Enter..." type="text"/>
+                        <span class="material-symbols-outlined absolute right-3 top-3 text-outline-variant text-[18px] pointer-events-none">link</span>
+                    </div>
+                </div>
+
+                <!-- Date-Specific Todo List Card -->
+                <div class="bg-surface-container-lowest rounded-2xl cloud-shadow p-6 flex-grow hover-lift transition-soft border border-outline-variant/20 flex flex-col justify-between min-h-[320px]">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 id="todo-title" class="font-headline-md text-[19px] text-primary font-bold">오늘 할 일을 추가해볼까요? 🌱</h3>
+                        </div>
+                        
+                        <!-- Todo List Items -->
+                        <div id="todo-list-container" class="space-y-2 mb-4 max-h-[220px] overflow-y-auto pr-1">
+                            <!-- Populated by dashboard.js -->
+                        </div>
+                    </div>
+
+                    <!-- Add Todo Form -->
+                    <div class="flex gap-2 pt-3 border-t border-surface-container-highest border-dashed">
+                        <input id="new-todo-input" class="flex-grow bg-surface-container-low border-none rounded-full px-4 py-2.5 font-body-md text-sm focus:ring-2 focus:ring-primary focus:outline-none text-on-surface placeholder:text-on-surface-variant/50" placeholder="새로운 할 일 입력..." type="text"/>
+                        <button id="add-todo-btn" class="bg-primary text-on-primary w-10 h-10 rounded-full flex items-center justify-center hover:bg-primary-container hover:text-on-primary-container transition-colors flex-shrink-0 cursor-pointer shadow-sm" title="할 일 추가">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- VIEW 2: JOURNAL ARCHIVE VIEW (Full List)       -->
+        <!-- ============================================== -->
+        <div id="journal-view" class="mt-8 hidden animate-fadeIn">
+            <!-- Journal Archive Header -->
+            <div class="bg-surface-container-lowest rounded-2xl cloud-shadow p-8 mb-8 border border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <div class="flex items-center gap-3 mb-1">
+                        <span class="material-symbols-outlined text-primary text-[32px]">auto_stories</span>
+                        <h2 class="font-headline-lg text-headline-lg text-primary">Garden Journal Archives</h2>
+                        <span id="journal-total-count" class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-xs">0 Entries</span>
+                    </div>
+                    <p class="font-body-md text-on-surface-variant">정원에 남겨둔 소중한 생각과 기억들을 모아보세요.</p>
+                </div>
+
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <!-- Search Filter -->
+                    <div class="relative flex-grow md:w-64">
+                        <span class="material-symbols-outlined absolute left-3.5 top-3 text-outline text-[20px] pointer-events-none">search</span>
+                        <input id="journal-search-input" type="text" placeholder="일기 제목, 본문, 태그 검색..." class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-primary text-on-surface placeholder:text-outline"/>
+                    </div>
+                    
+                    <!-- Write Entry Button -->
+                    <button id="journal-new-entry-btn" class="bg-primary text-on-primary px-5 py-2.5 rounded-full font-bold text-sm hover:bg-primary-container hover:text-on-primary-container transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer whitespace-nowrap">
+                        <span class="material-symbols-outlined text-[18px]">edit_note</span>
+                        <span>오늘 일기 쓰기</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Journal Entries Cards Grid -->
+            <div id="journal-entries-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Populated dynamically by dashboard.js -->
+            </div>
+
+            <!-- Empty State for Journal -->
+            <div id="journal-empty-state" class="hidden bg-surface-container-lowest rounded-2xl cloud-shadow p-16 text-center border border-outline-variant/20 flex-col items-center justify-center">
+                <div class="w-20 h-20 rounded-full bg-surface-container-low flex items-center justify-center text-primary mb-4 mx-auto">
+                    <span class="material-symbols-outlined text-[40px]">spa</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-primary mb-2">아직 기록된 일기가 없어요</h3>
+                <p class="font-body-md text-on-surface-variant max-w-md mx-auto mb-6">캘린더에서 날짜를 선택하거나 위 버튼을 눌러 오늘 정원에서의 첫 일기를 남겨보세요 🌱</p>
+                <button onclick="openEntryPanel(new Date())" class="bg-primary-container text-on-primary-container font-bold px-6 py-3 rounded-full hover:bg-inverse-primary transition-colors cursor-pointer shadow-sm inline-flex items-center gap-2">
+                    <span class="material-symbols-outlined">edit_note</span>
+                    <span>새 일기 작성하기</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Side Panel (Diary Entry Editor) -->
+    <div class="fixed inset-y-0 right-0 w-full md:w-[520px] bg-surface-container-lowest shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 rounded-l-3xl flex flex-col h-screen border-l border-outline-variant/30" id="entry-panel">
+        
+        <!-- Header -->
+        <div class="p-6 border-b border-dashed border-outline-variant flex justify-between items-center bg-surface-container-lowest sticky top-0 rounded-tl-3xl z-10">
+            <div>
+                <span class="text-xs text-primary font-bold uppercase tracking-wider block mb-0.5">Garden Journal</span>
+                <h2 class="font-headline-md text-headline-md text-primary" id="panel-date">August 21, 2024</h2>
+            </div>
+            <button id="close-panel-btn" class="text-on-surface-variant hover:text-primary transition-colors w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-low cursor-pointer" title="닫기">
+                <span class="material-symbols-outlined text-3xl">close</span>
+            </button>
+        </div>
+
+        <!-- Content Body -->
+        <div class="p-6 overflow-y-auto flex-grow bg-surface">
+            <!-- Weather Selection -->
+            <div class="flex gap-4 justify-center mb-6 bg-surface-container-low p-3 rounded-2xl shadow-inner">
+                <button type="button" data-weather="sunny" class="weather-btn w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-sm" title="맑음">
+                    <span class="material-symbols-outlined">sunny</span>
+                </button>
+                <button type="button" data-weather="cloudy" class="weather-btn w-12 h-12 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center hover:scale-110 transition-transform cursor-pointer" title="흐림">
+                    <span class="material-symbols-outlined">cloud</span>
+                </button>
+                <button type="button" data-weather="rainy" class="weather-btn w-12 h-12 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center hover:scale-110 transition-transform cursor-pointer" title="비">
+                    <span class="material-symbols-outlined">rainy</span>
+                </button>
+            </div>
+
+            <!-- Title -->
+            <div class="mb-4">
+                <input id="diary-title-input" class="w-full bg-transparent border-none font-headline-lg text-headline-lg text-on-surface placeholder:text-on-surface-variant/40 focus:ring-0 p-0 font-bold" placeholder="오늘의 제목을 입력해보세요" type="text"/>
+            </div>
+
+            <!-- Content Editor -->
+            <div class="mb-6">
+                <textarea id="diary-content-textarea" class="w-full h-56 bg-transparent border-none font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:ring-0 resize-none p-0 leading-relaxed" placeholder="오늘 하루는 어땠나요? 편안하게 기록해보세요..."></textarea>
+            </div>
+
+            <!-- Photo Upload (0/5) -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="font-body-md text-body-md font-bold text-on-surface-variant flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px]">photo_library</span>
+                        Photos
+                    </span>
+                    <span id="photo-count-display" class="font-label-sm text-label-sm text-outline font-bold">0/5</span>
+                </div>
+                
+                <!-- Hidden file input -->
+                <input type="file" id="photo-upload-input" accept="image/*" multiple class="hidden"/>
+
+                <!-- Photos Horizontal Preview List -->
+                <div id="photo-preview-list" class="flex gap-3 overflow-x-auto pb-2 items-center">
+                    <!-- Populated dynamically (Add button + Image cards) -->
+                </div>
+            </div>
+
+            <!-- Hashtags (0/20) -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="font-body-md text-body-md font-bold text-on-surface-variant flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px]">tag</span>
+                        Hashtags
+                    </span>
+                    <span id="hashtag-count-display" class="font-label-sm text-label-sm text-outline font-bold">2/20</span>
+                </div>
+                <div id="hashtag-list-container" class="flex flex-wrap gap-2 items-center">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="p-6 border-t border-dashed border-outline-variant bg-surface-container-lowest sticky bottom-0 rounded-bl-3xl flex gap-3">
+            <button id="delete-entry-btn" class="hidden py-4 px-5 rounded-full bg-error-container text-on-error-container hover:bg-error hover:text-on-error transition-colors font-bold text-sm cursor-pointer flex items-center gap-1" title="일기 삭제">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+            </button>
+            <button id="save-entry-btn" class="flex-grow bg-primary text-on-primary font-body-lg text-body-lg py-4 rounded-full hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-md font-bold flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+                <span class="material-symbols-outlined">save</span>
+                <span>Save Entry</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="fixed inset-0 bg-inverse-surface/20 backdrop-blur-sm hidden z-40" id="panel-overlay"></div>
+
+    <!-- Footer -->
+    <footer class="w-full py-8 border-t border-dashed border-outline-variant/60 bg-transparent max-w-[1400px] mx-auto px-container-padding flex flex-col md:flex-row justify-between items-center mt-12 gap-4">
+        <div class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+            <span class="material-symbols-outlined">local_florist</span>
+            <span>Morning Garden Diary</span>
+        </div>
+        <div class="font-body-md text-body-md text-on-surface-variant">© 2026 Morning Garden Diary. Hand-drawn with cozy care.</div>
+        <div class="flex gap-4">
+            <a class="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="javascript:void(0)">Privacy Policy</a>
+            <a class="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="javascript:void(0)">Terms of Service</a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
